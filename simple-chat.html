@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KALIAI - Simple Chat Test</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        
+        .chat-header {
+            background: rgba(26, 26, 26, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .premium-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #ffd700, #ffb300);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0a0a0a;
+            font-size: 1.5rem;
+        }
+        
+        .logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .welcome-screen {
+            text-align: center;
+            max-width: 600px;
+        }
+        
+        .welcome-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .welcome-subtitle {
+            font-size: 1.2rem;
+            color: #cccccc;
+            margin-bottom: 2rem;
+        }
+        
+        .status-message {
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .success { border-color: #00ff88; color: #00ff88; }
+        .error { border-color: #ff4757; color: #ff4757; }
+        
+        .chat-input-area {
+            background: rgba(26, 26, 26, 0.9);
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            padding: 1.5rem 2rem;
+        }
+        
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(42, 42, 42, 0.6);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 20px;
+            padding: 1rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .message-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+            resize: none;
+            min-height: 24px;
+        }
+        
+        .message-input::placeholder {
+            color: #999999;
+        }
+        
+        .send-btn {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #ffd700, #ffb300);
+            border: none;
+            border-radius: 8px;
+            color: #0a0a0a;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .send-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .logout-btn {
+            background: rgba(255, 71, 87, 0.2);
+            border: 1px solid #ff4757;
+            color: #ff4757;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255, 71, 87, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="premium-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <span class="logo-text">KALIAI</span>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+        
+        <div class="chat-messages">
+            <div class="welcome-screen">
+                <h1 class="welcome-title">KALIAI</h1>
+                <p class="welcome-subtitle">Premium AI Security Intelligence Platform</p>
+                
+                <div class="status-message success" id="authStatus">
+                    ✅ Authentication successful! Welcome to KALIAI.
+                </div>
+                
+                <div class="status-message" id="userInfo">
+                    👤 Logged in as: <span id="userEmail">Loading...</span>
+                </div>
+                
+                <div class="status-message">
+                    🎨 Premium black & gold theme loaded successfully!
+                </div>
+                
+                <div class="status-message">
+                    💬 Ready to chat! Type a message below to get started.
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-input-area">
+            <div class="input-wrapper">
+                <textarea 
+                    class="message-input"
+                    placeholder="Ask KALIAI about security, threats, vulnerabilities..."
+                    rows="1"
+                ></textarea>
+                <button class="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Check authentication
+        document.addEventListener('DOMContentLoaded', function() {
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            const userEmail = localStorage.getItem('userEmail');
+            
+            console.log('Authentication check:', isAuthenticated);
+            console.log('User email:', userEmail);
+            
+            if (!isAuthenticated) {
+                document.getElementById('authStatus').innerHTML = '❌ Not authenticated. Redirecting to login...';
+                document.getElementById('authStatus').className = 'status-message error';
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+                return;
+            }
+            
+            // Show user info
+            if (userEmail) {
+                document.getElementById('userEmail').textContent = userEmail;
+            }
+            
+            console.log('KALIAI Simple Chat loaded successfully!');
+        });
+        
+        function logout() {
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('userEmail');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
