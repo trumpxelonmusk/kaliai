@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KALIAI - Premium AI Security Intelligence</title>
+    <link rel="stylesheet" href="premium-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="chatbot-container">
+        <!-- Header -->
+        <div class="chatbot-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-brain"></i>
+                            <div class="logo-pulse"></div>
+                        </div>
+                        <span class="logo-text">KALIAI</span>
+                    </div>
+                    <div class="header-info">
+                        <p class="status" id="status">Online</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="action-btn" id="historyBtn" title="Chat History">
+                        <i class="fas fa-history"></i>
+                    </button>
+                    <button class="action-btn" id="clearChat" title="Clear Chat">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="action-btn" id="settingsBtn" title="Settings">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <div class="user-menu" id="userMenu">
+                        <button class="user-avatar-btn" id="userAvatarBtn" title="User Menu">
+                            <i class="fas fa-user"></i>
+                        </button>
+                        <div class="user-dropdown" id="userDropdown">
+                            <div class="user-info">
+                                <span class="user-name" id="headerUserName">Loading...</span>
+                                <span class="user-email" id="headerUserEmail">Loading...</span>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item" id="profileBtn">
+                                <i class="fas fa-user-circle"></i>
+                                Profile
+                            </button>
+                            <button class="dropdown-item" id="historyDropdownBtn">
+                                <i class="fas fa-history"></i>
+                                Chat History
+                            </button>
+                            <button class="dropdown-item" id="settingsDropdownBtn">
+                                <i class="fas fa-cog"></i>
+                                Settings
+                            </button>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item danger" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Messages Area -->
+        <div class="chat-messages" id="chatMessages">
+            <div class="welcome-message">
+                <div class="welcome-content">
+                    <div class="welcome-logo">
+                        <div class="logo-icon large">
+                            <i class="fas fa-brain"></i>
+                            <div class="logo-pulse"></div>
+                        </div>
+                    </div>
+                    <h2>Welcome to KALIAI!</h2>
+                    <p>I'm KALIAI, your advanced AI security intelligence system. Ask me about cybersecurity, penetration testing, vulnerability assessment, threat analysis, or any security-related questions.</p>
+                    <div class="welcome-features">
+                        <div class="feature">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Security Analysis</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-code"></i>
+                            <span>Code Review</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-search"></i>
+                            <span>Threat Intelligence</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-bug"></i>
+                            <span>Vulnerability Assessment</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="chat-input-area">
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <textarea 
+                        id="messageInput" 
+                        placeholder="Type your message here..."
+                        rows="1"
+                        maxlength="1000"
+                    ></textarea>
+                    <div class="input-actions">
+                        <button class="attach-btn" id="attachBtn" title="Attach File">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <button class="send-btn" id="sendBtn" title="Send Message">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <span>AI is typing...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="modal" id="settingsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Settings</h3>
+                    <button class="close-btn" id="closeSettings">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="setting-group">
+                        <label for="apiUrl">API Endpoint:</label>
+                        <input type="url" id="apiUrl" value="http://127.0.0.1:8000/api/query" placeholder="Enter FastAPI endpoint">
+                    </div>
+                    <div class="setting-group">
+                        <label for="themeSelect">Theme:</label>
+                        <select id="themeSelect">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                            <option value="auto">Auto</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label for="messageHistory">Message History:</label>
+                        <select id="messageHistory">
+                            <option value="50">50 messages</option>
+                            <option value="100">100 messages</option>
+                            <option value="200">200 messages</option>
+                            <option value="unlimited">Unlimited</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label for="streamingToggle">Streaming Responses:</label>
+                        <select id="streamingToggle">
+                            <option value="true">Enabled</option>
+                            <option value="false">Disabled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="save-btn" id="saveSettings">Save Settings</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- File Upload Modal -->
+        <div class="modal" id="fileModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Attach File</h3>
+                    <button class="close-btn" id="closeFileModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="file-upload-area">
+                        <input type="file" id="fileInput" multiple accept=".txt,.pdf,.doc,.docx,.jpg,.jpeg,.png">
+                        <div class="upload-placeholder">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click to select files or drag and drop</p>
+                            <small>Supported formats: TXT, PDF, DOC, DOCX, JPG, PNG</small>
+                        </div>
+                    </div>
+                    <div class="selected-files" id="selectedFiles"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="attach-files-btn" id="attachFilesBtn">Attach Files</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

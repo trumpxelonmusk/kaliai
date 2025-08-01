@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat History - KALIAI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="history.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="history-container">
+        <!-- Sidebar -->
+        <div class="history-sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <span class="logo-text">KALIAI</span>
+                </div>
+                <button class="new-chat-btn" id="newChatBtn">
+                    <i class="fas fa-plus"></i>
+                    New Chat
+                </button>
+            </div>
+
+            <div class="sidebar-content">
+                <div class="search-container">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Search conversations...">
+                    </div>
+                </div>
+
+                <div class="chat-filters">
+                    <button class="filter-btn active" data-filter="all">
+                        <i class="fas fa-comments"></i>
+                        All Chats
+                    </button>
+                    <button class="filter-btn" data-filter="today">
+                        <i class="fas fa-clock"></i>
+                        Today
+                    </button>
+                    <button class="filter-btn" data-filter="week">
+                        <i class="fas fa-calendar-week"></i>
+                        This Week
+                    </button>
+                    <button class="filter-btn" data-filter="starred">
+                        <i class="fas fa-star"></i>
+                        Starred
+                    </button>
+                </div>
+
+                <div class="chat-list" id="chatList">
+                    <!-- Chat items will be dynamically loaded -->
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-info" id="userInfo">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name">Loading...</span>
+                        <span class="user-email">Loading...</span>
+                    </div>
+                </div>
+                <div class="sidebar-actions">
+                    <button class="action-btn" id="settingsBtn" title="Settings">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <button class="action-btn" id="logoutBtn" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="history-main">
+            <div class="main-header">
+                <div class="header-left">
+                    <h1>Chat History</h1>
+                    <p class="header-subtitle">Manage and explore your conversations</p>
+                </div>
+                <div class="header-actions">
+                    <button class="action-btn" id="exportAllBtn" title="Export All Chats">
+                        <i class="fas fa-download"></i>
+                        Export All
+                    </button>
+                    <button class="action-btn" id="importBtn" title="Import Chats">
+                        <i class="fas fa-upload"></i>
+                        Import
+                    </button>
+                    <button class="action-btn primary" id="backToChatBtn">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Chat
+                    </button>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="totalChats">0</span>
+                            <span class="stat-label">Total Conversations</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-message"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="totalMessages">0</span>
+                            <span class="stat-label">Total Messages</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="avgResponseTime">0ms</span>
+                            <span class="stat-label">Avg Response Time</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="starredChats">0</span>
+                            <span class="stat-label">Starred Chats</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-preview" id="chatPreview">
+                    <div class="preview-placeholder">
+                        <i class="fas fa-comments"></i>
+                        <h3>Select a conversation</h3>
+                        <p>Choose a chat from the sidebar to view its details and messages</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Detail Modal -->
+    <div class="modal" id="chatDetailModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 id="modalChatTitle">Chat Details</h3>
+                <div class="modal-actions">
+                    <button class="action-btn" id="starChatBtn" title="Star Chat">
+                        <i class="fas fa-star"></i>
+                    </button>
+                    <button class="action-btn" id="exportChatBtn" title="Export Chat">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="action-btn danger" id="deleteChatBtn" title="Delete Chat">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="close-btn" id="closeChatModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="chat-messages-preview" id="chatMessagesPreview">
+                    <!-- Messages will be loaded here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="continueChatBtn">Continue Chat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div class="modal" id="importModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Import Chat History</h3>
+                <button class="close-btn" id="closeImportModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="import-area">
+                    <input type="file" id="importFileInput" accept=".json" multiple>
+                    <div class="import-placeholder">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Select JSON files to import</p>
+                        <small>Supported formats: JSON chat exports</small>
+                    </div>
+                </div>
+                <div class="import-progress" id="importProgress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <span class="progress-text">Importing chats...</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="cancelImportBtn">Cancel</button>
+                <button class="btn primary" id="startImportBtn">Import</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="history.js"></script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KALIAI - Premium AI Security Intelligence</title>
+    <link rel="stylesheet" href="premium-auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="login-root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        
+        function PremiumLogin() {
+            const [email, setEmail] = useState('');
+            const [password, setPassword] = useState('');
+            const [isLoading, setIsLoading] = useState(false);
+            const [particles, setParticles] = useState([]);
+            
+            useEffect(() => {
+                const newParticles = [];
+                for (let i = 0; i < 50; i++) {
+                    newParticles.push({
+                        id: i,
+                        x: Math.random() * 100,
+                        y: Math.random() * 100,
+                        size: Math.random() * 3 + 1,
+                        speed: Math.random() * 2 + 1
+                    });
+                }
+                setParticles(newParticles);
+            }, []);
+            
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setIsLoading(true);
+                
+                setTimeout(() => {
+                    localStorage.setItem('isAuthenticated', 'true');
+                    localStorage.setItem('userEmail', email);
+                    window.location.href = 'index.html';
+                }, 2000);
+            };
+            
+            const handleSocialLogin = (provider) => {
+                setIsLoading(true);
+                setTimeout(() => {
+                    localStorage.setItem('isAuthenticated', 'true');
+                    localStorage.setItem('userEmail', 'user@' + provider + '.com');
+                    window.location.href = 'index.html';
+                }, 1500);
+            };
+            
+            return React.createElement('div', { className: 'premium-auth-container' },
+                React.createElement('div', { className: 'animated-bg' },
+                    React.createElement('div', { className: 'gradient-orb orb-1' }),
+                    React.createElement('div', { className: 'gradient-orb orb-2' }),
+                    React.createElement('div', { className: 'gradient-orb orb-3' })
+                ),
+                React.createElement('div', { className: 'particles' },
+                    particles.map(particle => 
+                        React.createElement('div', {
+                            key: particle.id,
+                            className: 'particle',
+                            style: {
+                                left: particle.x + '%',
+                                top: particle.y + '%',
+                                width: particle.size + 'px',
+                                height: particle.size + 'px',
+                                animationDuration: particle.speed + 's'
+                            }
+                        })
+                    )
+                ),
+                React.createElement('div', { className: 'auth-glass-card' },
+                    React.createElement('div', { className: 'logo-section' },
+                        React.createElement('div', { className: 'premium-logo' },
+                            React.createElement('div', { className: 'logo-icon' },
+                                React.createElement('i', { className: 'fas fa-brain' }),
+                                React.createElement('div', { className: 'logo-glow' })
+                            ),
+                            React.createElement('div', { className: 'logo-text' },
+                                React.createElement('h1', null, 'KALIAI'),
+                                React.createElement('span', { className: 'logo-subtitle' }, 'PREMIUM AI SECURITY')
+                            )
+                        ),
+                        React.createElement('p', { className: 'premium-tagline' }, 'Advanced AI Security Intelligence Platform')
+                    ),
+                    React.createElement('form', { className: 'premium-form', onSubmit: handleSubmit },
+                        React.createElement('div', { className: 'form-header' },
+                            React.createElement('h2', null, 'Welcome Back'),
+                            React.createElement('p', null, 'Access your premium security dashboard')
+                        ),
+                        React.createElement('div', { className: 'form-group' },
+                            React.createElement('div', { className: 'input-wrapper' },
+                                React.createElement('i', { className: 'fas fa-envelope input-icon' }),
+                                React.createElement('input', {
+                                    type: 'email',
+                                    value: email,
+                                    onChange: (e) => setEmail(e.target.value),
+                                    placeholder: 'Email address',
+                                    required: true,
+                                    className: 'premium-input'
+                                }),
+                                React.createElement('div', { className: 'input-glow' })
+                            )
+                        ),
+                        React.createElement('div', { className: 'form-group' },
+                            React.createElement('div', { className: 'input-wrapper' },
+                                React.createElement('i', { className: 'fas fa-lock input-icon' }),
+                                React.createElement('input', {
+                                    type: 'password',
+                                    value: password,
+                                    onChange: (e) => setPassword(e.target.value),
+                                    placeholder: 'Password',
+                                    required: true,
+                                    className: 'premium-input'
+                                }),
+                                React.createElement('div', { className: 'input-glow' })
+                            )
+                        ),
+                        React.createElement('button', {
+                            type: 'submit',
+                            className: 'premium-btn primary' + (isLoading ? ' loading' : ''),
+                            disabled: isLoading
+                        },
+                            isLoading ? [
+                                React.createElement('div', { className: 'spinner', key: 'spinner' }),
+                                React.createElement('span', { key: 'text' }, 'Authenticating...')
+                            ] : [
+                                React.createElement('span', { key: 'text' }, 'Access Dashboard'),
+                                React.createElement('i', { className: 'fas fa-arrow-right', key: 'icon' })
+                            ],
+                            React.createElement('div', { className: 'btn-glow' })
+                        ),
+                        React.createElement('div', { className: 'auth-links' },
+                            React.createElement('a', { href: '#', className: 'forgot-link' }, 'Forgot password?')
+                        ),
+                        React.createElement('div', { className: 'divider' },
+                            React.createElement('span', null, 'or continue with')
+                        ),
+                        React.createElement('div', { className: 'social-login' },
+                            React.createElement('button', {
+                                type: 'button',
+                                className: 'social-btn google',
+                                onClick: () => handleSocialLogin('google'),
+                                disabled: isLoading
+                            },
+                                React.createElement('i', { className: 'fab fa-google' }),
+                                React.createElement('span', null, 'Google'),
+                                React.createElement('div', { className: 'btn-glow' })
+                            ),
+                            React.createElement('button', {
+                                type: 'button',
+                                className: 'social-btn github',
+                                onClick: () => handleSocialLogin('github'),
+                                disabled: isLoading
+                            },
+                                React.createElement('i', { className: 'fab fa-github' }),
+                                React.createElement('span', null, 'GitHub'),
+                                React.createElement('div', { className: 'btn-glow' })
+                            )
+                        ),
+                        React.createElement('p', { className: 'switch-auth' },
+                            'New to KALIAI? ',
+                            React.createElement('a', { href: 'signup.html', className: 'gold-link' }, 'Create Account')
+                        )
+                    )
+                ),
+                React.createElement('div', { className: 'auth-footer' },
+                    React.createElement('p', null, ' 2024 KALIAI. Premium AI Security Intelligence.')
+                )
+            );
+        }
+        
+        ReactDOM.render(React.createElement(PremiumLogin), document.getElementById('login-root'));
+    </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Debug Test</title>
+</head>
+<body>
+    <h1>Security AI API Debug Test</h1>
+    <button onclick="testNonStreaming()">Test Non-Streaming API</button>
+    <button onclick="testStreaming()">Test Streaming API</button>
+    <div id="result"></div>
+
+    <script>
+        async function testNonStreaming() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing non-streaming...';
+            
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        question: "What is SQL injection?",
+                        session_id: "debug_test",
+                        stream: false
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `<h3>✅ Non-Streaming Success!</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    resultDiv.innerHTML = `<h3>❌ Non-Streaming Error: ${response.status}</h3><pre>${await response.text()}</pre>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<h3>❌ Non-Streaming Connection Error</h3><pre>${error.message}</pre>`;
+            }
+        }
+
+        async function testStreaming() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing streaming...';
+            
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/query', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        question: "What is XSS?",
+                        session_id: "debug_streaming",
+                        stream: true
+                    })
+                });
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = '<h3>✅ Streaming Response:</h3><div id="streaming-content"></div>';
+                    
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+                    let content = '';
+                    
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+                        
+                        const chunk = decoder.decode(value);
+                        content += chunk;
+                        document.getElementById('streaming-content').innerHTML = `<pre>${content}</pre>`;
+                    }
+                } else {
+                    resultDiv.innerHTML = `<h3>❌ Streaming Error: ${response.status}</h3><pre>${await response.text()}</pre>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<h3>❌ Streaming Connection Error</h3><pre>${error.message}</pre>`;
+            }
+        }
+    </script>
+</body>
+</html> 

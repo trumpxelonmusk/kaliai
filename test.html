@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KALIAI - Deployment Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 { color: #fff; margin-bottom: 1rem; }
+        .status { margin: 1rem 0; padding: 1rem; border-radius: 0.5rem; }
+        .success { background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; }
+        .info { background: rgba(59, 130, 246, 0.2); border: 1px solid #3b82f6; }
+        .links { margin-top: 2rem; }
+        .links a { 
+            display: inline-block; 
+            margin: 0.5rem; 
+            padding: 0.75rem 1.5rem; 
+            background: rgba(255, 255, 255, 0.2); 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 0.5rem; 
+            transition: all 0.3s ease;
+        }
+        .links a:hover { background: rgba(255, 255, 255, 0.3); transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 KALIAI Deployment Test</h1>
+        
+        <div class="status success">
+            ✅ GitHub Pages is working!
+        </div>
+        
+        <div class="status info">
+            📍 Current URL: <span id="currentUrl"></span>
+        </div>
+        
+        <div class="status info">
+            👤 GitHub User: trumpxelonmusk
+        </div>
+        
+        <div class="status info">
+            📅 Test Time: <span id="testTime"></span>
+        </div>
+        
+        <div class="links">
+            <h3>Test KALIAI Pages:</h3>
+            <a href="login.html">🔐 Login Page</a>
+            <a href="signup.html">📝 Signup Page</a>
+            <a href="index.html">💬 Chat Interface</a>
+            <a href="history.html">📚 Chat History</a>
+        </div>
+        
+        <div style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.8;">
+            If you can see this page, GitHub Pages is working correctly!<br>
+            Click the links above to test each KALIAI component.
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('currentUrl').textContent = window.location.href;
+        document.getElementById('testTime').textContent = new Date().toLocaleString();
+        
+        // Test if other files exist
+        const testFiles = ['styles.css', 'auth.css', 'script.js', 'auth.js'];
+        testFiles.forEach(file => {
+            fetch(file)
+                .then(response => {
+                    console.log(`✅ ${file}: ${response.status === 200 ? 'Found' : 'Missing'}`);
+                })
+                .catch(error => {
+                    console.log(`❌ ${file}: Missing`);
+                });
+        });
+    </script>
+</body>
+</html>
