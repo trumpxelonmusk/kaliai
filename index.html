@@ -10,44 +10,44 @@
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="chatbot-container">
+    <div class="chat-container">
         <!-- Header -->
-        <div class="chatbot-header">
-            <div class="header-content">
-                <div class="header-left">
-                    <div class="logo">
-                        <div class="logo-icon">
-                            <i class="fas fa-brain"></i>
-                            <div class="logo-pulse"></div>
-                        </div>
-                        <span class="logo-text">KALIAI</span>
+        <div class="chat-header">
+            <div class="header-left">
+                <div class="premium-logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-brain"></i>
                     </div>
-                    <div class="header-info">
-                        <p class="status" id="status">Online</p>
-                    </div>
+                    <span class="logo-text">KALIAI</span>
                 </div>
-                <div class="header-actions">
-                    <button class="action-btn" id="historyBtn" title="Chat History">
+                <div class="header-status">
+                    <div class="status-indicator"></div>
+                    <span id="status">Online</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-controls">
+                    <button class="control-btn" id="historyBtn" title="Chat History">
                         <i class="fas fa-history"></i>
                     </button>
-                    <button class="action-btn" id="clearChat" title="Clear Chat">
+                    <button class="control-btn" id="clearChat" title="Clear Chat">
                         <i class="fas fa-trash"></i>
                     </button>
-                    <button class="action-btn" id="settingsBtn" title="Settings">
+                    <button class="control-btn" id="settingsBtn" title="Settings">
                         <i class="fas fa-cog"></i>
                     </button>
-                    <div class="user-menu" id="userMenu">
-                        <button class="user-avatar-btn" id="userAvatarBtn" title="User Menu">
-                            <i class="fas fa-user"></i>
-                        </button>
-                        <div class="user-dropdown" id="userDropdown">
-                            <div class="user-info">
-                                <span class="user-name" id="headerUserName">Loading...</span>
-                                <span class="user-email" id="headerUserEmail">Loading...</span>
-                            </div>
+                </div>
+                <div class="user-menu" id="userMenu">
+                    <div class="user-avatar" id="userAvatarBtn" title="User Menu">
+                        <span id="userInitials">U</span>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="user-info">
+                            <span class="user-name" id="headerUserName">Loading...</span>
+                            <span class="user-email" id="headerUserEmail">Loading...</span>
+                        </div>
                             <div class="dropdown-divider"></div>
                             <button class="dropdown-item" id="profileBtn">
                                 <i class="fas fa-user-circle"></i>
@@ -74,33 +74,42 @@
 
         <!-- Chat Messages Area -->
         <div class="chat-messages" id="chatMessages">
-            <div class="welcome-message">
-                <div class="welcome-content">
-                    <div class="welcome-logo">
-                        <div class="logo-icon large">
-                            <i class="fas fa-brain"></i>
-                            <div class="logo-pulse"></div>
-                        </div>
+            <div class="welcome-screen">
+                <div class="welcome-logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-brain"></i>
                     </div>
-                    <h2>Welcome to KALIAI!</h2>
-                    <p>I'm KALIAI, your advanced AI security intelligence system. Ask me about cybersecurity, penetration testing, vulnerability assessment, threat analysis, or any security-related questions.</p>
-                    <div class="welcome-features">
-                        <div class="feature">
+                </div>
+                <h1 class="welcome-title">KALIAI</h1>
+                <p class="welcome-subtitle">Premium AI Security Intelligence Platform</p>
+                <div class="welcome-features">
+                    <div class="feature-card">
+                        <div class="feature-icon">
                             <i class="fas fa-shield-alt"></i>
-                            <span>Security Analysis</span>
                         </div>
-                        <div class="feature">
+                        <h3 class="feature-title">Security Analysis</h3>
+                        <p class="feature-description">Advanced threat detection and security assessment capabilities</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
                             <i class="fas fa-code"></i>
-                            <span>Code Review</span>
                         </div>
-                        <div class="feature">
+                        <h3 class="feature-title">Code Review</h3>
+                        <p class="feature-description">Automated code vulnerability scanning and analysis</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
                             <i class="fas fa-search"></i>
-                            <span>Threat Intelligence</span>
                         </div>
-                        <div class="feature">
+                        <h3 class="feature-title">Threat Intelligence</h3>
+                        <p class="feature-description">Real-time threat intelligence and monitoring</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
                             <i class="fas fa-bug"></i>
-                            <span>Vulnerability Assessment</span>
                         </div>
+                        <h3 class="feature-title">Vulnerability Assessment</h3>
+                        <p class="feature-description">Comprehensive vulnerability identification and remediation</p>
                     </div>
                 </div>
             </div>
@@ -111,27 +120,20 @@
             <div class="input-container">
                 <div class="input-wrapper">
                     <textarea 
+                        class="message-input"
                         id="messageInput" 
-                        placeholder="Type your message here..."
+                        placeholder="Ask KALIAI about security, threats, vulnerabilities..."
                         rows="1"
                         maxlength="1000"
                     ></textarea>
                     <div class="input-actions">
-                        <button class="attach-btn" id="attachBtn" title="Attach File">
+                        <button class="input-btn" id="attachBtn" title="Attach File">
                             <i class="fas fa-paperclip"></i>
                         </button>
                         <button class="send-btn" id="sendBtn" title="Send Message">
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </div>
-                </div>
-                <div class="typing-indicator" id="typingIndicator">
-                    <div class="typing-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                    <span>AI is typing...</span>
                 </div>
             </div>
         </div>
@@ -209,5 +211,67 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+        // Authentication check for premium theme
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is authenticated
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            const userEmail = localStorage.getItem('userEmail');
+            
+            if (!isAuthenticated) {
+                // Redirect to login if not authenticated
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Initialize user info
+            if (userEmail) {
+                const userInitials = userEmail.charAt(0).toUpperCase();
+                const userInitialsElement = document.getElementById('userInitials');
+                const headerUserName = document.getElementById('headerUserName');
+                const headerUserEmail = document.getElementById('headerUserEmail');
+                
+                if (userInitialsElement) userInitialsElement.textContent = userInitials;
+                if (headerUserName) headerUserName.textContent = userEmail.split('@')[0];
+                if (headerUserEmail) headerUserEmail.textContent = userEmail;
+            }
+            
+            // Add logout functionality
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    localStorage.removeItem('isAuthenticated');
+                    localStorage.removeItem('userEmail');
+                    window.location.href = 'login.html';
+                });
+            }
+            
+            // Add user menu toggle
+            const userAvatarBtn = document.getElementById('userAvatarBtn');
+            const userDropdown = document.getElementById('userDropdown');
+            if (userAvatarBtn && userDropdown) {
+                userAvatarBtn.addEventListener('click', function() {
+                    userDropdown.style.display = userDropdown.style.display === 'block' ? 'none' : 'block';
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!userAvatarBtn.contains(event.target) && !userDropdown.contains(event.target)) {
+                        userDropdown.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Add navigation functionality
+            const historyBtn = document.getElementById('historyBtn');
+            if (historyBtn) {
+                historyBtn.addEventListener('click', function() {
+                    window.location.href = 'history.html';
+                });
+            }
+            
+            console.log('KALIAI Premium Theme Loaded Successfully!');
+        });
+    </script>
 </body>
 </html> 
